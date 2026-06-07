@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>國立成功大學中正堂配置查詢系統</title>
+
+<style>
+
+body{
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+    background-color:#f5f5f5;
+    margin:0;
+    padding:20px;
+    text-align:center;
+}
+
+h1{
+    color:#003366;
+    margin-bottom:30px;
+}
+
+.container{
+    width:90%;
+    max-width:1400px;
+    margin:auto;
+}
+
+.control-panel{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+    margin-bottom:20px;
+}
+
+label{
+    font-size:18px;
+    font-weight:bold;
+}
+
+select{
+    font-size:16px;
+    padding:8px;
+    margin:10px;
+    width:250px;
+}
+
+.image-container{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+#floorplan{
+    width:100%;
+    max-width:1200px;
+    display:none;
+    border:2px solid #cccccc;
+}
+
+#description{
+    margin-top:20px;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.info-title{
+    color:#003366;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>國立成功大學中正堂配置查詢系統</h1>
+
+    <div class="control-panel">
+
+        <label>類別：</label>
+
+        <select id="category">
+
+            <option value="比賽場地">比賽場地</option>
+
+            <option value="活動場地">活動場地</option>
+
+        </select>
+
+        <br>
+
+        <label>配置：</label>
+
+        <select id="layout"></select>
+
+    </div>
+
+    <div class="image-container">
+
+        <img id="floorplan">
+
+        <div id="description"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+const layouts = {
+
+    "比賽場地":{
+
+        "籃球場":{
+            image:"images/basketball.png",
+            description:"中正堂一樓標準籃球場平面配置圖。"
+        },
+
+        "排球場":{
+            image:"images/volleyball.png",
+            description:"中正堂一樓標準排球場平面配置圖。"
+        },
+
+        "羽球場":{
+            image:"images/badminton.png",
+            description:"中正堂一樓標準羽球場平面配置圖。"
+        },
+
+        "桌球場":{
+            image:"images/tabletennis.png",
+            description:"中正堂一樓桌球比賽平面配置圖。"
+        },
+
+        "柔道場":{
+            image:"images/judo.png",
+            description:"中正堂一樓柔道場平面配置圖。"
+        }
+
+    },
+
+    "活動場地":{
+
+        "畢業典禮":{
+            image:"images/graduation.png",
+            description:"中正堂一樓畢業典禮平面配置圖。"
+        },
+
+        "大型演講":{
+            image:"images/lecture.png",
+            description:"中正堂一樓大型講座平面配置圖。"
+        },
+
+        "演唱會":{
+            image:"images/concert.png",
+            description:"中正堂一樓演唱會平面配置圖。"
+        },
+
+        "宴會":{
+            image:"images/banquet.png",
+            description:"中正堂一樓宴會平面配置圖。"
+        },
+
+        "海報展":{
+            image:"images/poster.png",
+            description:"中正堂一樓海報展平面配置圖。"
+        },
+
+        "企業徵才":{
+            image:"images/jobfair.png",
+            description:"中正堂一樓企業徵才博覽會平面配置圖。"
+        },
+
+        "災難收容所":{
+            image:"images/shelter.png",
+            description:"中正堂一樓災害緊急收容平面配置圖。"
+        }
+
+    }
+
+};
+
+const categorySelect =
+document.getElementById("category");
+
+const layoutSelect =
+document.getElementById("layout");
+
+const image =
+document.getElementById("floorplan");
+
+const description =
+document.getElementById("description");
+
+function updateLayoutOptions(){
+
+    const category =
+    categorySelect.value;
+
+    layoutSelect.innerHTML = "";
+
+    for(let layoutName in layouts[category]){
+
+        let option =
+        document.createElement("option");
+
+        option.value = layoutName;
+        option.text = layoutName;
+
+        layoutSelect.appendChild(option);
+    }
+
+}
+
+function showLayout(){
+
+    const category =
+    categorySelect.value;
+
+    const layout =
+    layoutSelect.value;
+
+    const selected =
+    layouts[category][layout];
+
+    image.src =
+    selected.image;
+
+    image.style.display =
+    "block";
+
+    description.innerHTML =
+    `
+    <div class="info-title">
+        配置說明
+    </div>
+    ${selected.description}
+    `;
+}
+
+categorySelect.addEventListener(
+"change",
+function(){
+
+    updateLayoutOptions();
+    showLayout();
+
+}
+);
+
+layoutSelect.addEventListener(
+"change",
+showLayout
+);
+
+updateLayoutOptions();
+showLayout();
+
+</script>
+
+</body>
+</html>
